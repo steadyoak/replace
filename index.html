@@ -11,7 +11,7 @@
             flex-direction: column;
             align-items: center;
             margin-top: 50px;
-            background-color: #1a1a1a;
+            background-color: #222; /* 接近黑色的背景 */
             color: white;
         }
         textarea {
@@ -19,7 +19,7 @@
             height: 150px;
             margin-bottom: 20px;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #555;
             border-radius: 5px;
             font-size: 16px;
             background-color: #333;
@@ -38,24 +38,6 @@
         button:hover {
             background-color: #45a049;
         }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            width: 80%;
-        }
-        .long-button {
-            width: calc(100% - 30px); /* 与三个按钮的总宽度相同 */
-            padding: 15px;
-            font-size: 18px;
-            margin-top: 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .long-button:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
@@ -65,15 +47,12 @@
     <textarea id="inputText" placeholder="在这里粘贴你的文本"></textarea>
     <textarea id="outputText" placeholder="替换结果将在此显示"></textarea>
 
-    <!-- 包含三个按钮的容器 -->
-    <div class="button-container">
+    <div>
         <button onclick="pasteText()">粘贴</button>
         <button onclick="replaceText()">替换</button>
         <button onclick="copyText()">复制</button>
+        <button onclick="completeAll()">一键完成</button>
     </div>
-
-    <!-- 一键完成按钮 -->
-    <button class="long-button" onclick="completeAll()">一键完成</button>
 
     <script>
         // 粘贴功能
@@ -117,16 +96,15 @@
         // 复制功能
         function copyText() {
             const outputText = document.getElementById('outputText').value;
-            return navigator.clipboard.writeText(outputText).then(() => {
+            navigator.clipboard.writeText(outputText).then(() => {
                 alert('文本已复制到剪贴板！');
             }).catch(err => {
                 console.error('Failed to copy text: ', err);
             });
         }
 
-        // 一键完成功能
+        // 一键完成：粘贴、替换和复制
         async function completeAll() {
-            // 依次执行粘贴、替换和复制
             await pasteText();
             await replaceText();
             await copyText();
