@@ -1,0 +1,4 @@
+hello, 你好
+world, 世界
+test，测试
+example，例子
