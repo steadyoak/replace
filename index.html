@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本替换工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        textarea {
+            width: 80%;
+            height: 150px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>文本替换工具</h1>
+
+    <textarea id="inputText" placeholder="在这里粘贴你的文本"></textarea>
+    <textarea id="outputText" placeholder="替换结果将在此显示"></textarea>
+
+    <div>
+        <button onclick="pasteText()">粘贴</button>
+        <button onclick="replaceText()">替换</button>
+        <button onclick="copyText()">复制</button>
+    </div>
+
+    <script>
+        // 粘贴功能
+        function pasteText() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('inputText').value = text;
+            }).catch(err => {
+                console.error('Failed to read clipboard contents: ', err);
+            });
+        }
+
+        // 替换功能
+        async function replaceText() {
+            const inputText = document.getElementById('inputText').value;
+            const outputTextArea = document.getElementById('outputText');
+
+            // 读取 replaces.txt 文件
+            const response = await fetch('replaces.txt');
+            const data = await response.text();
+
+            // 解析替换规则
+            const lines = data.split('\n');
+            const replacements = {};
+            lines.forEach(line => {
+                const parts = line.split(/[,，]/); // 支持半角和全角逗号
+                if (parts.length === 2) {
+                    replacements[parts[0].trim()] = parts[1].trim();
+                }
+            });
+
+            // 进行替换
+            let resultText = inputText;
+            for (const [key, value] of Object.entries(replacements)) {
+                const regex = new RegExp(key, 'g'); // 全局替换
+                resultText = resultText.replace(regex, value);
+            }
+
+            outputTextArea.value = resultText;
+        }
+
+        // 复制功能
+        function copyText() {
+            const outputText = document.getElementById('outputText').value;
+            navigator.clipboard.writeText(outputText).then(() => {
+                alert('文本已复制到剪贴板！');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+    </script>
+
+</body>
+</html>
