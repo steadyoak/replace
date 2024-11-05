@@ -11,6 +11,8 @@
             flex-direction: column;
             align-items: center;
             margin-top: 50px;
+            background-color: #1a1a1a;
+            color: white;
         }
         textarea {
             width: 80%;
@@ -20,6 +22,8 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            background-color: #333;
+            color: white;
         }
         button {
             margin: 5px;
@@ -34,11 +38,23 @@
         button:hover {
             background-color: #45a049;
         }
-        .long-button {
+        .button-container {
+            display: flex;
+            justify-content: center;
             width: 80%;
+        }
+        .long-button {
+            width: calc(100% - 30px); /* 与三个按钮的总宽度相同 */
             padding: 15px;
             font-size: 18px;
             margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .long-button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -49,13 +65,14 @@
     <textarea id="inputText" placeholder="在这里粘贴你的文本"></textarea>
     <textarea id="outputText" placeholder="替换结果将在此显示"></textarea>
 
-    <div>
+    <!-- 包含三个按钮的容器 -->
+    <div class="button-container">
         <button onclick="pasteText()">粘贴</button>
         <button onclick="replaceText()">替换</button>
         <button onclick="copyText()">复制</button>
     </div>
 
-    <!-- 添加一键完成按钮 -->
+    <!-- 一键完成按钮 -->
     <button class="long-button" onclick="completeAll()">一键完成</button>
 
     <script>
